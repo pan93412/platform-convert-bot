@@ -21,7 +21,7 @@ export function convertUrl(url: URL): ConvertResult | null {
     return null;
 }
 
-interface ConvertResult {
+export interface ConvertResult {
     result: string;
     platform: Platform;
 }
