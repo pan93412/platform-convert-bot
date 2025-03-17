@@ -1,4 +1,4 @@
-import { Platform } from "./types";
+import type { Platform } from "./types";
 
 export const bilibili: Platform = {
     command: "b23",
