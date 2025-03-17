@@ -2,7 +2,7 @@
  * Main entry point for the Discord bot
  */
 
-import { Client, Events, GatewayIntentBits } from 'discord.js';
+import { Client, Events, GatewayIntentBits, MessageFlags } from 'discord.js';
 import { config } from 'dotenv';
 import { extractUrl } from './extractor';
 import { convertUrl } from './converter';
@@ -13,17 +13,17 @@ config();
 
 // Create a new client instance
 const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent,
-  ],
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+    ],
 });
 
 const discordToken = process.env.DISCORD_TOKEN;
 if (!discordToken) {
-  logger.error("DISCORD_TOKEN is not set");
-  throw new Error("DISCORD_TOKEN is not set");
+    logger.error("DISCORD_TOKEN is not set");
+    throw new Error("DISCORD_TOKEN is not set");
 }
 
 // Log in to Discord
@@ -31,21 +31,25 @@ client.login(discordToken);
 
 // When the client is ready, run this code once
 client.once(Events.ClientReady, () => {
-  logger.info(`Logged in as ${client.user?.tag ?? '<unknown>'}!`);
+    logger.info(`Logged in as ${client.user?.tag ?? '<unknown>'}!`);
 });
 
 // Handle message create events
 client.on(Events.MessageCreate, async (message) => {
-  // make sure the message is not from the bot
-  if (message.author.bot) return;
+    // make sure the message is not from the bot
+    if (message.author.bot) return;
 
-  // extract the urls from the message
-  const urls = extractUrl(message.content);
-  const convertedUrls = urls.map(url => convertUrl(url)).filter(Boolean);
+    // extract the urls from the message
+    const urls = extractUrl(message.content);
+    const convertedUrls = urls.map(url => convertUrl(url)).filter(Boolean);
 
-  logger.debug({ urls, convertedUrls, content: message.content }, "Converting URLs");
+    logger.debug({ urls, convertedUrls, content: message.content }, "Converting URLs");
 
-  if (convertedUrls.length > 0) {
-    await message.reply({ content: convertedUrls.map(result => `${result?.platform.name}: ${result?.result}`).join("\n") });
-  }
+    if (convertedUrls.length > 0) {
+        await message.reply({
+            content: convertedUrls.map(result => `${result?.platform.name}: ${result?.result}`,
+            ).join("\n"),
+            flags: MessageFlags.SuppressNotifications,
+        });
+    }
 });

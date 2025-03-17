@@ -7,16 +7,38 @@ import logger from './logger';
  * @returns The URLs extracted from the message.
  */
 export function extractUrl(message: string): URL[] {
-    const urlRegex = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
-    const match = message.match(urlRegex);
-    if (!match) return [];
+    let urlBuf = '';
+    const urls: URL[] = [];
 
-    return match.map(url => {
-        try {
-            return new URL(url);
-        } catch (error) {
-            logger.warn({ url, error }, "the extracted url is invalid");
-            return null;
+    let idx = 0;
+
+    for (const char of message) {
+        if (char === ' ') {
+            if (urlBuf.length > 0) {
+                try {
+                    const url = new URL(urlBuf);
+                    urls.push(url);
+                } catch (error) {
+                    logger.debug({ url: urlBuf, error, idx }, "the extracted url is invalid");
+                }
+            }
+            urlBuf = '';
+        } else {
+            urlBuf += char;
         }
-    }).filter(Boolean) as URL[];
+
+        idx++;
+    }
+
+    // check if there is a url in the buffer, if so, parse it.
+    if (urlBuf.length > 0) {
+        try {
+            const url = new URL(urlBuf);
+            urls.push(url);
+        } catch (error) {
+            logger.debug({ url: urlBuf, error, idx }, "the extracted url is invalid");
+        }
+    }
+
+    return urls;
 }
