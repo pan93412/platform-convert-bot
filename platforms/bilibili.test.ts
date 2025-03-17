@@ -26,6 +26,12 @@ describe("Bilibili", () => {
         expect(result).toBe("https://vxb23.tv/nHaHjyu");
     });
     
+    it("should leave the url unchanged if it's already a vxb23 url", () => {
+        const url = "https://vxb23.tv/nHaHjyu";
+        const result = bilibili.convert(url);
+        expect(result).toBe(url);
+    });
+
     it("should throw an error if the url is not a bilibili url", () => {
         const url = "https://www.google.com";
         expect(() => bilibili.convert(url)).toThrow("Invalid Bilibili URL: invalid hostname.");
