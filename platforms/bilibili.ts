@@ -1,4 +1,5 @@
 import type { Platform } from "./types";
+import logger from "../logger";
 
 export const bilibili: Platform = {
     command: "b23",
@@ -13,6 +14,7 @@ export const bilibili: Platform = {
         const pathname = url.pathname.replace(/\/$/, "");
         const videoId = pathname.split("/").pop()?.trim();
         if (!videoId) {
+            logger.error({ url: url.toString() }, "Invalid Bilibili URL: no video id found.");
             throw new Error("Invalid Bilibili URL: no video id found.");
         }
 

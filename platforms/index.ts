@@ -1,4 +1,3 @@
-import { REST, Routes, SlashCommandBuilder, type Snowflake } from "discord.js";
 import { bilibili } from "./bilibili";
 import type { Platform } from "./types";
 
