@@ -23,22 +23,21 @@ if (!discordToken) {
   throw new Error("DISCORD_TOKEN is not set");
 }
 
-const applicationId = process.env.DISCORD_APPLICATION_ID;
-if (!applicationId) {
-  throw new Error("DISCORD_APPLICATION_ID is not set");
-}
-
 // Log in to Discord
 client.login(discordToken);
 
 // When the client is ready, run this code once
 client.once(Events.ClientReady, () => {
-  console.log(`Logged in as ${client.user?.tag}!`);
+  if (!client.user) {
+    throw new Error("Client user is not set");
+  }
+
+  console.log(`Logged in as ${client.user.tag}!`);
 
   const rest = new REST().setToken(discordToken);
   
   // Register slash commands
-  registerSlashCommands(rest, applicationId).then(() => {
+  registerSlashCommands(rest, client.user.id).then(() => {
     console.log("Slash commands registered successfully");
   }).catch(console.error);
 });
@@ -60,7 +59,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
   try {
     const url = interaction.options.get("url", true).value;
     if (typeof url !== "string") {
-      throw new Error("Invalid URL");
+      throw new Error("沒有指定網址。");
     }
 
     const convertedUrl = platform.convert(url);
