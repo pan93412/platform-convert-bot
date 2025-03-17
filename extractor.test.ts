@@ -1,16 +1,16 @@
 import { describe, expect, it } from "vitest";
-import { extractUrl } from "./extractor";
+import { extractUrls } from "./extractor";
 
-describe("extractUrl", () => {
+describe("extractUrls", () => {
     it("should extract urls from a pure URL message", () => {
         const message = "https://www.google.com";
-        const urls = extractUrl(message);
+        const urls = extractUrls(message);
         expect(urls).toEqual([new URL(message)]);
     });
 
     it("should extract urls from a message with multiple urls", () => {
         const message = "https://www.google.com https://www.facebook.com";
-        const urls = extractUrl(message);
+        const urls = extractUrls(message);
         expect(urls).toEqual([
             new URL("https://www.google.com"),
             new URL("https://www.facebook.com"),
@@ -19,7 +19,7 @@ describe("extractUrl", () => {
 
     it("should extract urls from a message with multiple urls and spaces", () => {
         const message = "https://www.google.com https://www.facebook.com  https://www.twitter.com";
-        const urls = extractUrl(message);
+        const urls = extractUrls(message);
         expect(urls).toEqual([
             new URL("https://www.google.com"),
             new URL("https://www.facebook.com"),
@@ -29,22 +29,28 @@ describe("extractUrl", () => {
 
     it("should extract urls from a regular message", () => {
         const message = "hello https://www.google.com";
-        const urls = extractUrl(message);
+        const urls = extractUrls(message);
         expect(urls).toEqual([new URL("https://www.google.com")]);
     });
 
     it("should extract urls from a message with comma or period", () => {
         const message = "hello https://www.google.com, 這東西很酷欸 ><";
-        const urls = extractUrl(message);
+        const urls = extractUrls(message);
         expect(urls).toEqual([new URL("https://www.google.com")]);
     });
 
     it("should extract urls from a message with comma or period and spaces", () => {
         const message = "hello https://www.google.com, 這東西很酷欸 >< https://www.facebook.com";
-        const urls = extractUrl(message);
+        const urls = extractUrls(message);
         expect(urls).toEqual([
             new URL("https://www.google.com"),
             new URL("https://www.facebook.com"),
         ]);
+    });
+
+    it("should extract only the valid urls from the message", () => {
+        const message = "`https://` 是一種通訊協定，可以參考 https://www.google.com";
+        const urls = extractUrls(message);
+        expect(urls).toEqual([new URL("https://www.google.com")]);
     });
 });

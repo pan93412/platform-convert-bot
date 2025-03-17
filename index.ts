@@ -4,7 +4,7 @@
 
 import { Client, Events, GatewayIntentBits, MessageFlags } from 'discord.js';
 import { config } from 'dotenv';
-import { extractUrl } from './extractor';
+import { extractUrls } from './extractor';
 import { convertUrl } from './converter';
 import logger from './logger';
 
@@ -40,7 +40,7 @@ client.on(Events.MessageCreate, async (message) => {
     if (message.author.bot) return;
 
     // extract the urls from the message
-    const urls = extractUrl(message.content);
+    const urls = extractUrls(message.content);
     const convertedUrls = urls.map(url => convertUrl(url)).filter(Boolean);
 
     logger.debug({ urls, convertedUrls, content: message.content }, "Converting URLs");

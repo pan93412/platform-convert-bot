@@ -6,7 +6,7 @@ import logger from './logger';
  * @param message The message to extract the URLs from.
  * @returns The URLs extracted from the message.
  */
-export function extractUrl(message: string): URL[] {
+export function extractUrls(message: string): URL[] {
     const urls: URL[] = [];
     
     // Split the message into words
