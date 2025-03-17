@@ -7,38 +7,40 @@ import logger from './logger';
  * @returns The URLs extracted from the message.
  */
 export function extractUrl(message: string): URL[] {
-    let urlBuf = '';
     const urls: URL[] = [];
-
-    let idx = 0;
-
-    for (const char of message) {
-        if (char === ' ') {
-            if (urlBuf.length > 0) {
-                try {
-                    const url = new URL(urlBuf);
-                    urls.push(url);
-                } catch (error) {
-                    logger.debug({ url: urlBuf, error, idx }, "the extracted url is invalid");
-                }
-            }
-            urlBuf = '';
-        } else {
-            urlBuf += char;
-        }
-
-        idx++;
-    }
-
-    // check if there is a url in the buffer, if so, parse it.
-    if (urlBuf.length > 0) {
+    
+    // Split the message into words
+    const words = message.split(/\s+/);
+    
+    for (const word of words) {
+        // Remove trailing punctuation
+        let cleanWord = word;
+        
+        // Skip empty words
+        if (!cleanWord) continue;
+        
+        // Try to parse the word as a URL
         try {
-            const url = new URL(urlBuf);
-            urls.push(url);
+            // Check if the word contains a protocol, if not, try to add it
+            let urlCandidate = cleanWord;
+            if (!urlCandidate.startsWith('http://') && !urlCandidate.startsWith('https://')) {
+                continue; // Skip words without protocol as they're likely not URLs
+            }
+            
+            // Remove trailing punctuation (commas, periods, etc.)
+            while (urlCandidate.length > 0 && 
+                   [',', '.', ':', ';', '，', '。', '：', '；', '、'].includes(urlCandidate[urlCandidate.length - 1])) {
+                urlCandidate = urlCandidate.slice(0, -1);
+            }
+            
+            if (urlCandidate) {
+                const url = new URL(urlCandidate);
+                urls.push(url);
+            }
         } catch (error) {
-            logger.debug({ url: urlBuf, error, idx }, "the extracted url is invalid");
+            logger.debug({ url: cleanWord, error }, "the extracted url is invalid");
         }
     }
-
+    
     return urls;
 }
