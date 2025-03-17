@@ -4,14 +4,11 @@
 
 ## 使用方式
 
-在 Discord 中，你可以使用斜線指令來轉換連結。目前支援的平台有：
+在 Discord 中，直接貼上連結，就會將連結轉換成整理後的連結。
 
-- `/b23 url:<連結>` - 將 Bilibili 的連結轉換成 vxb23 的連結
-
-例如：
-
+比如
 ```
-/b23 url:https://www.bilibili.com/video/BV1oWQyYdECQ/
+這影片超讚：https://www.bilibili.com/video/BV1oWQyYdECQ/
 ```
 
 機器人會回覆：
@@ -63,7 +60,10 @@ export const youtube: Platform = {
     command: "yt", // 這會是斜線指令的名稱，例如 /yt
     name: "YouTube",
     description: "將 YouTube 連結轉換成無廣告版本",
-    convert(url: string): string {
+    shouldHandle(url: URL): boolean {
+        return url.hostname === "www.youtube.com" || url.hostname === "youtu.be";
+    },
+    convert(url: URL): string {
         // 實作你的轉換邏輯
         // 如果有錯誤，直接 throw 錯誤就好！
         return "轉換後的連結";
