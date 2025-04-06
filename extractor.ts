@@ -8,5 +8,12 @@ import urlRegexSafe from 'url-regex-safe';
  */
 export function extractUrls(message: string): URL[] {
     const matches = message.match(urlRegexSafe()) ?? [];
-    return matches.map(url => new URL(url));
+    return matches.map(url => {
+        try {
+            return new URL(url);
+        } catch (error) {
+            console.error(`Invalid URL: ${url}`, error);
+            return null;
+        }
+    }).filter((url): url is URL => url !== null);
 }
