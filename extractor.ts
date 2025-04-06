@@ -1,4 +1,5 @@
 import urlRegexSafe from 'url-regex-safe';
+import logger from './logger';
 
 /**
  * Extract the URLs from the message.
@@ -12,7 +13,7 @@ export function extractUrls(message: string): URL[] {
         try {
             return new URL(url);
         } catch (error) {
-            console.error(`Invalid URL: ${url}`, error);
+            logger.debug({ url, error }, "failed to parse URL");
             return null;
         }
     }).filter((url): url is URL => url !== null);
