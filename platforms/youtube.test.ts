@@ -29,28 +29,34 @@ describe("YouTube", () => {
     });
 
     describe("convert", () => {
-        it("should convert youtube standard url to youtu.be url", () => {
+        it("should convert youtube standard url to youtube.com url", () => {
             const url = new URL("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
             const result = youtube.convert(url);
-            expect(result).toBe("https://youtu.be/dQw4w9WgXcQ");
+            expect(result).toBe("https://youtube.com/watch?v=dQw4w9WgXcQ");
         });
     
-        it("should convert youtube.com url to youtu.be url", () => {
+        it("should maintain youtube.com url format", () => {
             const url = new URL("https://youtube.com/watch?v=dQw4w9WgXcQ");
             const result = youtube.convert(url);
-            expect(result).toBe("https://youtu.be/dQw4w9WgXcQ");
+            expect(result).toBe("https://youtube.com/watch?v=dQw4w9WgXcQ");
         });
 
-        it("should remove tracking parameters from youtu.be url", () => {
-            const url = new URL("https://youtu.be/dQw4w9WgXcQ?si=IPsWsXYiUwuOfB7x");
+        it("should convert youtu.be url to youtube.com format", () => {
+            const url = new URL("https://youtu.be/dQw4w9WgXcQ");
             const result = youtube.convert(url);
-            expect(result).toBe("https://youtu.be/dQw4w9WgXcQ");
+            expect(result).toBe("https://youtube.com/watch?v=dQw4w9WgXcQ");
         });
     
-        it("should convert youtube url with additional parameters to youtu.be url", () => {
+        it("should remove tracking parameters from youtu.be url and convert to youtube.com", () => {
+            const url = new URL("https://youtu.be/dQw4w9WgXcQ?si=IPsWsXYiUwuOfB7x");
+            const result = youtube.convert(url);
+            expect(result).toBe("https://youtube.com/watch?v=dQw4w9WgXcQ");
+        });
+    
+        it("should convert youtube url with additional parameters to youtube.com url without extra parameters", () => {
             const url = new URL("https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=30s&ab_channel=RickAstley");
             const result = youtube.convert(url);
-            expect(result).toBe("https://youtu.be/dQw4w9WgXcQ");
+            expect(result).toBe("https://youtube.com/watch?v=dQw4w9WgXcQ");
         });
 
         it("should throw error for invalid youtube urls", () => {
