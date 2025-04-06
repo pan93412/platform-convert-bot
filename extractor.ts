@@ -16,5 +16,5 @@ export function extractUrls(message: string): URL[] {
             logger.debug({ url, error }, "failed to parse URL");
             return null;
         }
-    }).filter((url): url is URL => url !== null);
+    }).filter((url) => url !== null);
 }
