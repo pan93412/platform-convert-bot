@@ -14,7 +14,7 @@ export interface Platform {
 
     /**
      * 決定是否要處理這則訊息。
-     * 
+     *
      * @param url 網址
      * @returns 是否要由這個 platform 處理
      */
@@ -22,7 +22,7 @@ export interface Platform {
 
     /**
      * 傳入一個網址，轉換成整理過的連結
-     * 
+     *
      * @param url 網址
      * @returns 整理過的連結
      */

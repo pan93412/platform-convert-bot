@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { youtube } from "./youtube";
 
 describe("YouTube", () => {
@@ -34,7 +34,7 @@ describe("YouTube", () => {
             const result = youtube.convert(url);
             expect(result).toBe("https://youtube.com/watch?v=dQw4w9WgXcQ");
         });
-    
+
         it("should maintain youtube.com url format", () => {
             const url = new URL("https://youtube.com/watch?v=dQw4w9WgXcQ");
             const result = youtube.convert(url);
@@ -46,34 +46,48 @@ describe("YouTube", () => {
             const result = youtube.convert(url);
             expect(result).toBe("https://youtube.com/watch?v=dQw4w9WgXcQ");
         });
-    
+
         it("should remove tracking parameters from youtu.be url and convert to youtube.com", () => {
-            const url = new URL("https://youtu.be/dQw4w9WgXcQ?si=IPsWsXYiUwuOfB7x");
+            const url = new URL(
+                "https://youtu.be/dQw4w9WgXcQ?si=IPsWsXYiUwuOfB7x",
+            );
             const result = youtube.convert(url);
             expect(result).toBe("https://youtube.com/watch?v=dQw4w9WgXcQ");
         });
-    
+
         it("should preserve timestamp parameter when converting youtube urls", () => {
-            const url = new URL("https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=30s");
+            const url = new URL(
+                "https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=30s",
+            );
             const result = youtube.convert(url);
-            expect(result).toBe("https://youtube.com/watch?v=dQw4w9WgXcQ&t=30s");
+            expect(result).toBe(
+                "https://youtube.com/watch?v=dQw4w9WgXcQ&t=30s",
+            );
         });
-        
+
         it("should preserve timestamp parameter when converting youtu.be urls", () => {
             const url = new URL("https://youtu.be/dQw4w9WgXcQ?t=30s");
             const result = youtube.convert(url);
-            expect(result).toBe("https://youtube.com/watch?v=dQw4w9WgXcQ&t=30s");
+            expect(result).toBe(
+                "https://youtube.com/watch?v=dQw4w9WgXcQ&t=30s",
+            );
         });
-        
+
         it("should convert youtube url with additional parameters but only keep timestamp parameter", () => {
-            const url = new URL("https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=30s&ab_channel=RickAstley");
+            const url = new URL(
+                "https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=30s&ab_channel=RickAstley",
+            );
             const result = youtube.convert(url);
-            expect(result).toBe("https://youtube.com/watch?v=dQw4w9WgXcQ&t=30s");
+            expect(result).toBe(
+                "https://youtube.com/watch?v=dQw4w9WgXcQ&t=30s",
+            );
         });
 
         it("should throw error for invalid youtube urls", () => {
             const url = new URL("https://www.youtube.com/playlist?list=123456");
-            expect(() => youtube.convert(url)).toThrow("Invalid YouTube URL: no video id found.");
+            expect(() => youtube.convert(url)).toThrow(
+                "Invalid YouTube URL: no video id found.",
+            );
         });
     });
 });
