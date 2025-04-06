@@ -53,10 +53,22 @@ describe("YouTube", () => {
             expect(result).toBe("https://youtube.com/watch?v=dQw4w9WgXcQ");
         });
     
-        it("should convert youtube url with additional parameters to youtube.com url without extra parameters", () => {
+        it("should preserve timestamp parameter when converting youtube urls", () => {
+            const url = new URL("https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=30s");
+            const result = youtube.convert(url);
+            expect(result).toBe("https://youtube.com/watch?v=dQw4w9WgXcQ&t=30s");
+        });
+        
+        it("should preserve timestamp parameter when converting youtu.be urls", () => {
+            const url = new URL("https://youtu.be/dQw4w9WgXcQ?t=30s");
+            const result = youtube.convert(url);
+            expect(result).toBe("https://youtube.com/watch?v=dQw4w9WgXcQ&t=30s");
+        });
+        
+        it("should convert youtube url with additional parameters but only keep timestamp parameter", () => {
             const url = new URL("https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=30s&ab_channel=RickAstley");
             const result = youtube.convert(url);
-            expect(result).toBe("https://youtube.com/watch?v=dQw4w9WgXcQ");
+            expect(result).toBe("https://youtube.com/watch?v=dQw4w9WgXcQ&t=30s");
         });
 
         it("should throw error for invalid youtube urls", () => {

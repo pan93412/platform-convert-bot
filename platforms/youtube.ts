@@ -14,6 +14,7 @@ export const youtube: Platform = {
 
     convert(url: URL): string {
         let videoId: string | null;
+        let timestamp: string | null = null;
         
         // Extract video ID based on URL format
         if (url.hostname === "youtu.be") {
@@ -21,12 +22,20 @@ export const youtube: Platform = {
         } else {
             videoId = url.searchParams.get("v");
         }
+        timestamp = url.searchParams.get("t");
         
         if (!videoId) {
             logger.error({ url: url.toString() }, "Invalid YouTube URL: no video id found.");
             throw new Error("Invalid YouTube URL: no video id found.");
         }
 
-        return `https://youtube.com/watch?v=${videoId}`;
+        let result = `https://youtube.com/watch?v=${videoId}`;
+        
+        // Preserve timestamp if it exists
+        if (timestamp) {
+            result += `&t=${timestamp}`;
+        }
+
+        return result;
     }
 };
