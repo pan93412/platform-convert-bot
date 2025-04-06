@@ -19,10 +19,12 @@
     "dotenv": "^16.4.7",
     "pino": "^9.6.0",
     "pino-pretty": "^13.0.0",
-    "tsx": "^4.19.3"
+    "tsx": "^4.19.3",
+    "url-regex-safe": "^4.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.13.10",
+    "@types/url-regex-safe": "^1.0.2",
     "typescript": "^5.8.2",
     "vitest": "^3.0.8"
   },

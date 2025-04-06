@@ -53,4 +53,10 @@ describe("extractUrls", () => {
         const urls = extractUrls(message);
         expect(urls).toEqual([new URL("https://www.google.com")]);
     });
+
+    it("should extract urls from a message with Chinese punctuation and a video URL", () => {
+        const message = "這影片超讚：https://www.bilibili.com/video/BV1oWQyYdECQ/";
+        const urls = extractUrls(message);
+        expect(urls).toEqual([new URL("https://www.bilibili.com/video/BV1oWQyYdECQ/")]);
+    });
 });
