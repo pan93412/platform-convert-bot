@@ -6,6 +6,7 @@
   "scripts": {
     "start": "tsx index.ts",
     "test": "vitest run .",
+    "check": "biome check --fix",
     "type-check": "tsc --noEmit"
   },
   "keywords": [],
@@ -23,14 +24,13 @@
     "url-regex-safe": "^4.0.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@types/node": "^22.13.10",
     "@types/url-regex-safe": "^1.0.2",
     "typescript": "^5.8.2",
     "vitest": "^3.0.8"
   },
   "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
+    "onlyBuiltDependencies": ["@biomejs/biome", "esbuild"]
   }
 }

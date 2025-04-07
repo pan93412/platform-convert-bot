@@ -18,7 +18,8 @@ describe("extractUrls", () => {
     });
 
     it("should extract urls from a message with multiple urls and spaces", () => {
-        const message = "https://www.google.com https://www.facebook.com  https://www.twitter.com";
+        const message =
+            "https://www.google.com https://www.facebook.com  https://www.twitter.com";
         const urls = extractUrls(message);
         expect(urls).toEqual([
             new URL("https://www.google.com"),
@@ -40,7 +41,8 @@ describe("extractUrls", () => {
     });
 
     it("should extract urls from a message with comma or period and spaces", () => {
-        const message = "hello https://www.google.com, 這東西很酷欸 >< https://www.facebook.com";
+        const message =
+            "hello https://www.google.com, 這東西很酷欸 >< https://www.facebook.com";
         const urls = extractUrls(message);
         expect(urls).toEqual([
             new URL("https://www.google.com"),
@@ -49,14 +51,18 @@ describe("extractUrls", () => {
     });
 
     it("should extract only the valid urls from the message", () => {
-        const message = "`https://` 是一種通訊協定，可以參考 https://www.google.com";
+        const message =
+            "`https://` 是一種通訊協定，可以參考 https://www.google.com";
         const urls = extractUrls(message);
         expect(urls).toEqual([new URL("https://www.google.com")]);
     });
 
     it("should extract urls from a message with Chinese punctuation and a video URL", () => {
-        const message = "這影片超讚：https://www.bilibili.com/video/BV1oWQyYdECQ/";
+        const message =
+            "這影片超讚：https://www.bilibili.com/video/BV1oWQyYdECQ/";
         const urls = extractUrls(message);
-        expect(urls).toEqual([new URL("https://www.bilibili.com/video/BV1oWQyYdECQ/")]);
+        expect(urls).toEqual([
+            new URL("https://www.bilibili.com/video/BV1oWQyYdECQ/"),
+        ]);
     });
 });

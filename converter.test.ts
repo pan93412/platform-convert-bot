@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { convertUrl, type ConvertResult } from "./converter";
+import { type ConvertResult, convertUrl } from "./converter";
 import { bilibili } from "./platforms/bilibili";
 
 describe("convertUrl", () => {

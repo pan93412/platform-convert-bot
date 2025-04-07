@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { bilibili } from "./bilibili";
 
 describe("Bilibili", () => {
@@ -34,7 +34,7 @@ describe("Bilibili", () => {
             const result = bilibili.convert(url);
             expect(result).toBe("https://vxb23.tv/BV1oWQyYdECQ");
         });
-    
+
         it("should convert bilibili short url to vxb23 url", () => {
             const url = new URL("https://b23.tv/nHaHjyu");
             const result = bilibili.convert(url);
@@ -42,13 +42,17 @@ describe("Bilibili", () => {
         });
 
         it("should convert bilibili short url with track id to vxb23 url", () => {
-            const url = new URL("https://b23.tv/nHaHjyu?spm_id_from=333.337.search-card.all.click&vd_source=114514");
+            const url = new URL(
+                "https://b23.tv/nHaHjyu?spm_id_from=333.337.search-card.all.click&vd_source=114514",
+            );
             const result = bilibili.convert(url);
             expect(result).toBe("https://vxb23.tv/nHaHjyu");
         });
-    
+
         it("should convert bilibili short url with track id to vxb23 url", () => {
-            const url = new URL("https://b23.tv/nHaHjyu?spm_id_from=333.337.search-card.all.click&vd_source=114514");
+            const url = new URL(
+                "https://b23.tv/nHaHjyu?spm_id_from=333.337.search-card.all.click&vd_source=114514",
+            );
             const result = bilibili.convert(url);
             expect(result).toBe("https://vxb23.tv/nHaHjyu");
         });
